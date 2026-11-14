@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastProvider } from './components/Toast';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -15,7 +15,7 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <BrowserRouter>
+      <HashRouter>
         <div className="min-h-screen flex flex-col bg-[#090d16] text-slate-100 selection:bg-violet-500 selection:text-white">
           <Navbar onRandomize={handleRandomizeFromNav} />
 
@@ -33,10 +33,7 @@ export default function App() {
               <Route
                 path="/gradient-generator-react"
                 element={
-                  <Home
-                    key={randomTrigger}
-                    externalGradient={selectedGradientForStudio}
-                  />
+                  <Navigate replace to="/" />
                 }
               />
               <Route path="/button" element={<GradientButton />} />
@@ -66,8 +63,7 @@ export default function App() {
 
           <Footer />
         </div>
-      </BrowserRouter>
+      </HashRouter>
     </ToastProvider>
   );
 }
-

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      // Single Page App redirect for GitHub Pages
+      var pathname = window.location.pathname;
+      var repo = '/gradient-generator-react';
+      if (pathname.startsWith(repo)) {
+        var subpath = pathname.substring(repo.length);
+        window.location.replace(repo + '/#' + (subpath ? subpath : '/') + window.location.search);
+      } else {
+        window.location.replace('/#' + (pathname ? pathname : '/') + window.location.search);
+      }
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to <a href="./">SR Gradient Studio</a>...</p>
+  </body>
+</html>
+
