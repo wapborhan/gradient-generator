@@ -1,50 +1,114 @@
-# Gradient Generator 
+# SR Gradient Studio V2 🎨
 
+[![React](https://img.shields.io/badge/React-18.3-61dafb.svg?style=flat-square&logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646cff.svg?style=flat-square&logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8.svg?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
+> **SR Gradient Studio V2** is a modern, high-performance gradient design toolkit and generator built with Vite, React 18, Tailwind CSS, and Chroma-js. 
 
-[![License](https://img.shields.io/badge/Live--demo-blue.svg)](https://code.wapborhan.com/gradient-generator-react)
+---
 
+## ✨ Features in V2
 
+### 🎛️ Advanced Gradient Studio
+- **Multi-Stop Color Engine**: Support for 2 to 7 custom color stops with dynamic addition, removal, reordering, and position sliders (0%–100%).
+- **Multiple Gradient Types**:
+  - **Linear Gradient**: Interactive 360° angle slider, direct degree input, and 8 quick directional presets.
+  - **Radial Gradient**: Circle / Ellipse shapes with 9 origin anchor positions.
+  - **Conic Gradient**: Precision angle dial and position offsets.
+- **Chroma.js Color Science**:
+  - Color smoothing interpolation algorithms (`LCH`, `LAB`, `HSL`, `Direct`) to prevent dull, muddy grey transition zones.
+  - Real-time luminance & contrast verification.
+- **Interactive Multi-Mode Preview**:
+  - **Canvas Mode**: Pure gradient display with dimension statistics.
+  - **Typography Mode**: Live `background-clip: text` gradient headline preview.
+  - **UI Card Mode**: Frosted glassmorphism interface overlay.
+  - **Button Mode**: Interactive call-to-action button test.
+  - **Fullscreen Immersion**: Full-viewport inspection with 1-click trigger or Escape key.
+  - **Pattern Overlays**: Switch between None, Dot Matrix, and Subtle Grid.
+- **One-Click Randomizer**: Generates harmonious trending color palettes with confetti feedback.
 
-A gradient generator seems fun. I do mostly use mycolors.space website to generate gradient in different formats. In the weekend I decided to make my own gradient generator and I have made a similar clone of mycolors.space. Take a look at the demo here.
+### 🔘 Gradient Buttons Showroom (`/button`)
+- **28+ Interactive Button Presets** with real CSS hover effects (shimmer gradient shift, ambient glow, 3D lift, and glass borders).
+- Filter by styles: Vibrant, Ocean, Sunset, Dark, Neon, Pastel.
+- 1-click **Copy CSS** and **Copy Tailwind** classes.
 
-![Gradient-Generator-image](./public/readme-image.png)
+### 🖼️ Curated Backgrounds Gallery (`/background`)
+- **36+ Full-Page Gradient Themes** categorized by mood (Ocean, Sunset, Neon, Vibrant, Dark, Pastel).
+- **Edit in Studio**: Transfer any curated background directly into the Generator Studio with one click.
+- Fullscreen modal preview & instant CSS / Tailwind clipboard copy.
 
-![Gradient-Generator-image](./public/Screenshot%202022-09-11%20234630.png)
+### 🌈 Color Harmonizer (`/palette`)
+- Pick a seed color to automatically calculate mathematical harmonies:
+  - Analogous, High-Contrast Complementary, Triadic, Monochromatic Depth, and Chromatic Tension.
+- Send any harmony directly into the Studio.
 
-The Gradient generator has options for changing the direction and the colors.  It takes to parameters of colors and generates 3 most related colors between them.
+### ⚡ Code Exporter
+- Pure CSS (`background-image: ...;`)
+- Tailwind CSS arbitrary class strings (`bg-[...]`)
+- Export & Download SVG vector file (`.svg`)
 
+---
 
+## 🚀 Getting Started
 
-## Available Scripts
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher recommended, fully compatible with Node 24)
+- npm or pnpm or yarn
 
-In the project directory, you can run:
+### Installation
 
-### `npm start`
+```bash
+# Clone the repository
+git clone https://github.com/wapborhan/gradient-generator-react.git
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Navigate to project directory
+cd gradient-generator-react
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Install dependencies
+npm install
+```
 
-### `npm test`
+### Development Server
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm run dev
+# or
+npm start
+```
 
-### `npm run build`
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Production Build
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm run build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The optimized static assets will be created in the `dist` folder.
 
-### `npm run eject`
+### Preview Build
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm run preview
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [React 18](https://reactjs.org/)
+- **Bundler & Dev Server**: [Vite 5](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS 3](https://tailwindcss.com/)
+- **Color Science**: [Chroma-js](https://gka.github.io/chroma.js/)
+- **Icons**: [React Icons](https://react-icons.github.io/react-icons/)
+- **Router**: [React Router DOM v6](https://reactrouter.com/)
+- **Celebration Effects**: [Canvas Confetti](https://www.kirilv.com/canvas-confetti/)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+Designed & Developed by [SR Dream Lab](https://www.srdreamlab.com).

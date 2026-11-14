@@ -1,6 +1,5 @@
-import Home from "./home/Home";
-import GradientButton from "./button";
-import Background from "./background";
-import NotFound from "../components/NotFound";
-
-export { Home, GradientButton, Background, NotFound };
+export { default as Home } from './home/Home';
+export { default as GradientButton } from './button/index';
+export { default as Background } from './background/index';
+export { default as PalettePage } from './palette/PalettePage';
+export { default as NotFound } from './NotFound';
