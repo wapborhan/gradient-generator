@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   MdOutlineContentCopy, 
@@ -24,6 +24,19 @@ export default function BackgroundPage({ onSelectGradientForStudio }) {
 
   const categories = ['All', 'Sunset', 'Ocean', 'Neon', 'Pastel', 'Vibrant', 'Dark'];
 
+  // Escape key listener for fullscreen preview
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setFullscreenGrad(null);
+      }
+    };
+    if (fullscreenGrad) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [fullscreenGrad]);
+
   const filteredData = BACKGROUND_DATA.filter((item) => {
     const matchesCat =
       selectedCategory === 'All' || item.category.toLowerCase() === selectedCategory.toLowerCase();
@@ -31,20 +44,43 @@ export default function BackgroundPage({ onSelectGradientForStudio }) {
     return matchesCat && matchesQuery;
   });
 
-  const handleCopy = (item, type) => {
+  const safeCopyToClipboard = async (text) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      return new Promise((resolve, reject) => {
+        const success = document.execCommand('copy');
+        textArea.remove();
+        success ? resolve() : reject(new Error('Copy failed'));
+      });
+    }
+  };
+
+  const handleCopy = async (item, type) => {
     const textToCopy =
       type === 'css'
         ? `background-image: ${item.code};`
         : buildTailwindClass(item.code);
 
-    navigator.clipboard.writeText(textToCopy);
-    setCopiedId(item.id);
-    setCopiedType(type);
-    showToast(`Copied ${type.toUpperCase()} for "${item.name}"!`);
-    setTimeout(() => {
-      setCopiedId(null);
-      setCopiedType('');
-    }, 2000);
+    try {
+      await safeCopyToClipboard(textToCopy);
+      setCopiedId(item.id);
+      setCopiedType(type);
+      showToast(`Copied ${type.toUpperCase()} for "${item.name}"!`);
+      setTimeout(() => {
+        setCopiedId(null);
+        setCopiedType('');
+      }, 2000);
+    } catch (e) {
+      showToast('Could not access clipboard', 'info');
+    }
   };
 
   const handleOpenInStudio = (item) => {
@@ -227,7 +263,7 @@ export default function BackgroundPage({ onSelectGradientForStudio }) {
         >
           <div className="w-full max-w-5xl flex items-center justify-between">
             <div className="px-4 py-2 rounded-xl bg-black/50 backdrop-blur-md text-white text-xs font-mono border border-white/10 shadow-2xl">
-              <span>Fullscreen Preview: {fullscreenGrad.name}</span>
+              <span>Fullscreen Preview: {fullscreenGrad.name} • Press Esc to exit</span>
             </div>
             <button
               onClick={() => setFullscreenGrad(null)}

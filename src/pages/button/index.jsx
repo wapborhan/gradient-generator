@@ -4,7 +4,6 @@ import {
   MdOutlineContentCopy, 
   MdCheck, 
   MdSearch,
-  MdAutoAwesome,
   MdTouchApp
 } from 'react-icons/md';
 import { useToast } from '../../components/Toast';
@@ -28,20 +27,43 @@ export default function ButtonPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const handleCopy = (btn, type) => {
+  const safeCopyToClipboard = async (text) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      return new Promise((resolve, reject) => {
+        const success = document.execCommand('copy');
+        textArea.remove();
+        success ? resolve() : reject(new Error('Copy failed'));
+      });
+    }
+  };
+
+  const handleCopy = async (btn, type) => {
     const textToCopy =
       type === 'css'
         ? `background-image: ${btn.code};`
         : btn.tailwind;
 
-    navigator.clipboard.writeText(textToCopy);
-    setCopiedId(btn.id);
-    setCopiedType(type);
-    showToast(`Copied ${type.toUpperCase()} for "${btn.name}"!`);
-    setTimeout(() => {
-      setCopiedId(null);
-      setCopiedType('');
-    }, 2000);
+    try {
+      await safeCopyToClipboard(textToCopy);
+      setCopiedId(btn.id);
+      setCopiedType(type);
+      showToast(`Copied ${type.toUpperCase()} for "${btn.name}"!`);
+      setTimeout(() => {
+        setCopiedId(null);
+        setCopiedType('');
+      }, 2000);
+    } catch (e) {
+      showToast('Could not access clipboard', 'info');
+    }
   };
 
   const handleButtonClick = (e, btn) => {

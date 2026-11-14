@@ -65,6 +65,19 @@ export default function Home({ externalGradient }) {
     }
   }, [externalGradient]);
 
+  // Escape key listener for fullscreen
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsFullscreen(false);
+      }
+    };
+    if (isFullscreen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen]);
+
   // Quick Direction Presets for Linear
   const directionPresets = [
     { label: 'To Top', angle: 0, icon: <FaArrowUp /> },
@@ -96,7 +109,7 @@ export default function Home({ externalGradient }) {
       return stops;
     }
     try {
-      const colors = stops.map((s) => s.color);
+      const colors = stops.map((s) => (chroma.valid(s.color) ? s.color : '#888888'));
       const scale = chroma.scale(colors).mode(chromaMode).colors(5);
       return scale.map((color, idx) => ({
         id: `chroma-${idx}`,
@@ -220,7 +233,29 @@ export default function Home({ externalGradient }) {
         setGradientType('conic-gradient');
       } else {
         setGradientType('linear-gradient');
+        // Extract angle if present
+        const angleMatch = code.match(/(\d+)deg/);
+        if (angleMatch) {
+          setAngle(Number(angleMatch[1]));
+        } else if (code.includes('to right top')) {
+          setAngle(45);
+        } else if (code.includes('to right bottom')) {
+          setAngle(135);
+        } else if (code.includes('to bottom left')) {
+          setAngle(225);
+        } else if (code.includes('to left top')) {
+          setAngle(315);
+        } else if (code.includes('to right')) {
+          setAngle(90);
+        } else if (code.includes('to bottom')) {
+          setAngle(180);
+        } else if (code.includes('to left')) {
+          setAngle(270);
+        } else if (code.includes('to top')) {
+          setAngle(0);
+        }
       }
+
       // Extract hex codes
       const hexMatches = code.match(/#[a-fA-F0-9]{3,8}/g);
       if (hexMatches && hexMatches.length >= 2) {
@@ -238,8 +273,29 @@ export default function Home({ externalGradient }) {
     }
   };
 
+  // Safe copy to clipboard with fallback
+  const safeCopyToClipboard = async (text) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      return new Promise((resolve, reject) => {
+        const success = document.execCommand('copy');
+        textArea.remove();
+        success ? resolve() : reject(new Error('Copy failed'));
+      });
+    }
+  };
+
   // Copy code handler
-  const handleCopyCode = () => {
+  const handleCopyCode = async () => {
     let textToCopy = '';
     if (exportFormat === 'css') {
       textToCopy = `background-image: ${cssGradient};`;
@@ -249,16 +305,20 @@ export default function Home({ externalGradient }) {
       textToCopy = svgCode;
     }
 
-    navigator.clipboard.writeText(textToCopy);
-    setHasCopied(true);
-    confetti({
-      particleCount: 40,
-      spread: 60,
-      origin: { y: 0.7 },
-      colors: stops.map((s) => s.color),
-    });
-    showToast(`Copied ${exportFormat.toUpperCase()} code to clipboard!`);
-    setTimeout(() => setHasCopied(false), 2000);
+    try {
+      await safeCopyToClipboard(textToCopy);
+      setHasCopied(true);
+      confetti({
+        particleCount: 40,
+        spread: 60,
+        origin: { y: 0.7 },
+        colors: stops.map((s) => s.color),
+      });
+      showToast(`Copied ${exportFormat.toUpperCase()} code to clipboard!`);
+      setTimeout(() => setHasCopied(false), 2000);
+    } catch (err) {
+      showToast('Could not access clipboard', 'info');
+    }
   };
 
   // Download SVG
@@ -777,8 +837,9 @@ export default function Home({ externalGradient }) {
 
             {/* List of Stops */}
             <div className="space-y-3">
-              {stops.map((stop, index) => {
-                const contrastColor = checkContrast(stop.color);
+              {stops.map((stop) => {
+                // Ensure safe hex value for native color picker
+                const safeHex = chroma.valid(stop.color) ? chroma(stop.color).hex() : '#000000';
                 return (
                   <div
                     key={stop.id}
@@ -790,7 +851,7 @@ export default function Home({ externalGradient }) {
                         <label className="relative flex-shrink-0 cursor-pointer">
                           <input
                             type="color"
-                            value={stop.color}
+                            value={safeHex}
                             onChange={(e) => handleColorChange(stop.id, e.target.value)}
                             className="w-9 h-9 rounded-xl shadow-inner border border-white/20"
                           />

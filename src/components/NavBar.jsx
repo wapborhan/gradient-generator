@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   MdGradient, 
   MdOutlineSmartButton, 
@@ -16,7 +16,6 @@ const Navbar = ({ onRandomize }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleRandomClick = () => {
     confetti({
@@ -36,22 +35,25 @@ const Navbar = ({ onRandomize }) => {
       to: '/',
       label: 'Studio',
       icon: <MdGradient className="text-lg" />,
-      exact: true,
+      end: true,
     },
     {
       to: '/button',
       label: 'Buttons',
       icon: <MdOutlineSmartButton className="text-lg" />,
+      end: false,
     },
     {
       to: '/background',
       label: 'Backgrounds',
       icon: <MdColorLens className="text-lg" />,
+      end: false,
     },
     {
       to: '/palette',
       label: 'Harmonizer',
       icon: <MdPalette className="text-lg" />,
+      end: false,
     },
   ];
 
@@ -85,27 +87,23 @@ const Navbar = ({ onRandomize }) => {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
-          {navLinks.map((link) => {
-            const isActive =
-              link.to === '/'
-                ? location.pathname === '/' || location.pathname === '/gradient-generator-react'
-                : location.pathname === link.to;
-
-            return (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all duration-150 ${
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.end}
+              className={({ isActive }) =>
+                `flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all duration-150 ${
                   isActive
                     ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-600/20'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                }`}
-              >
-                {link.icon}
-                <span>{link.label}</span>
-              </NavLink>
-            );
-          })}
+                }`
+              }
+            >
+              {link.icon}
+              <span>{link.label}</span>
+            </NavLink>
+          ))}
         </nav>
 
         {/* Action Controls */}
@@ -133,6 +131,7 @@ const Navbar = ({ onRandomize }) => {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden p-2.5 rounded-xl text-slate-400 hover:text-white bg-slate-900/80 border border-slate-800"
+            aria-label="Toggle Navigation"
           >
             {mobileMenuOpen ? <FaTimes className="text-lg" /> : <FaBars className="text-lg" />}
           </button>
@@ -142,28 +141,24 @@ const Navbar = ({ onRandomize }) => {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#090d16] border-b border-slate-800 px-4 pt-2 pb-4 space-y-1">
-          {navLinks.map((link) => {
-            const isActive =
-              link.to === '/'
-                ? location.pathname === '/' || location.pathname === '/gradient-generator-react'
-                : location.pathname === link.to;
-
-            return (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium ${
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.end}
+              onClick={() => setMobileMenuOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium ${
                   isActive
                     ? 'bg-violet-600 text-white'
                     : 'text-slate-300 hover:bg-slate-800/80'
-                }`}
-              >
-                {link.icon}
-                <span>{link.label}</span>
-              </NavLink>
-            );
-          })}
+                }`
+              }
+            >
+              {link.icon}
+              <span>{link.label}</span>
+            </NavLink>
+          ))}
         </div>
       )}
     </header>

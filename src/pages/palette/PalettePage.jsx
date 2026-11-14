@@ -6,11 +6,9 @@ import {
   MdOutlineContentCopy, 
   MdCheck, 
   MdAutoAwesome, 
-  MdTune,
-  MdColorLens 
+  MdTune 
 } from 'react-icons/md';
 import { useToast } from '../../components/Toast';
-import { checkContrast, buildTailwindClass } from '../../utils/gradientUtils';
 
 export default function PalettePage({ onSelectGradientForStudio }) {
   const { showToast } = useToast();
@@ -28,7 +26,7 @@ export default function PalettePage({ onSelectGradientForStudio }) {
       const compColor = base.set('hsl.h', '+180').hex();
       const complementary = [seedColor, compColor];
 
-      // 2. Analogous (±30deg)
+      // 2. Analogous (±35deg)
       const ana1 = base.set('hsl.h', '-35').hex();
       const ana2 = base.set('hsl.h', '+35').hex();
       const analogous = [ana1, seedColor, ana2];
@@ -111,11 +109,34 @@ export default function PalettePage({ onSelectGradientForStudio }) {
     showToast('Generated fresh seed color!');
   };
 
-  const handleCopy = (item) => {
-    navigator.clipboard.writeText(`background-image: ${item.code};`);
-    setCopiedKey(item.id);
-    showToast(`Copied CSS for ${item.name}!`);
-    setTimeout(() => setCopiedKey(null), 2000);
+  const safeCopyToClipboard = async (text) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      return new Promise((resolve, reject) => {
+        const success = document.execCommand('copy');
+        textArea.remove();
+        success ? resolve() : reject(new Error('Copy failed'));
+      });
+    }
+  };
+
+  const handleCopy = async (item) => {
+    try {
+      await safeCopyToClipboard(`background-image: ${item.code};`);
+      setCopiedKey(item.id);
+      showToast(`Copied CSS for ${item.name}!`);
+      setTimeout(() => setCopiedKey(null), 2000);
+    } catch (e) {
+      showToast('Could not access clipboard', 'info');
+    }
   };
 
   const handleOpenStudio = (item) => {
@@ -147,7 +168,7 @@ export default function PalettePage({ onSelectGradientForStudio }) {
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="color"
-              value={seedColor}
+              value={chroma.valid(seedColor) ? chroma(seedColor).hex() : '#6366f1'}
               onChange={(e) => setSeedColor(e.target.value)}
               className="w-10 h-10 rounded-xl shadow-inner border border-white/20"
             />
@@ -247,4 +268,3 @@ export default function PalettePage({ onSelectGradientForStudio }) {
     </div>
   );
 }
-
