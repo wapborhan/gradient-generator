@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ToastProvider } from './components/Toast';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import { Home, GradientButton, Background, PalettePage, NotFound } from './pages';
+import React, { useState } from "react";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ToastProvider } from "./components/Toast";
+import Footer from "./components/Footer";
+import {
+  Home,
+  GradientButton,
+  Background,
+  PalettePage,
+  NotFound,
+} from "./pages";
+import Navbar from "./components/Navbar";
 
 export default function App() {
-  const [selectedGradientForStudio, setSelectedGradientForStudio] = useState(null);
+  const [selectedGradientForStudio, setSelectedGradientForStudio] =
+    useState(null);
   const [randomTrigger, setRandomTrigger] = useState(0);
 
   const handleRandomizeFromNav = () => {
@@ -32,9 +39,7 @@ export default function App() {
               />
               <Route
                 path="/gradient-generator-react"
-                element={
-                  <Navigate replace to="/" />
-                }
+                element={<Navigate replace to="/" />}
               />
               <Route path="/button" element={<GradientButton />} />
               <Route

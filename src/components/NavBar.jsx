@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { 
-  MdGradient, 
-  MdOutlineSmartButton, 
-  MdColorLens, 
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  MdGradient,
+  MdOutlineSmartButton,
+  MdColorLens,
   MdPalette,
-  MdAutoAwesome
-} from 'react-icons/md';
-import { FaGithub, FaBars, FaTimes } from 'react-icons/fa';
-import { HiOutlineColorSwatch } from 'react-icons/hi';
-import confetti from 'canvas-confetti';
-import { useToast } from './Toast';
+  MdAutoAwesome,
+} from "react-icons/md";
+import { FaGithub, FaBars, FaTimes } from "react-icons/fa";
+import { HiOutlineColorSwatch } from "react-icons/hi";
+import confetti from "canvas-confetti";
+import { useToast } from "./Toast";
 
 const Navbar = ({ onRandomize }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -22,36 +22,36 @@ const Navbar = ({ onRandomize }) => {
       particleCount: 35,
       spread: 60,
       origin: { y: 0.1, x: 0.8 },
-      colors: ['#a855f7', '#ec4899', '#3b82f6', '#10b981'],
+      colors: ["#a855f7", "#ec4899", "#3b82f6", "#10b981"],
     });
     if (onRandomize) {
       onRandomize();
-      showToast('Generated fresh random gradient! ✨');
+      showToast("Generated fresh random gradient! ✨");
     }
   };
 
   const navLinks = [
     {
-      to: '/',
-      label: 'Studio',
+      to: "/",
+      label: "Studio",
       icon: <MdGradient className="text-lg" />,
       end: true,
     },
     {
-      to: '/button',
-      label: 'Buttons',
+      to: "/button",
+      label: "Buttons",
       icon: <MdOutlineSmartButton className="text-lg" />,
       end: false,
     },
     {
-      to: '/background',
-      label: 'Backgrounds',
+      to: "/background",
+      label: "Backgrounds",
       icon: <MdColorLens className="text-lg" />,
       end: false,
     },
     {
-      to: '/palette',
-      label: 'Harmonizer',
+      to: "/palette",
+      label: "Harmonizer",
       icon: <MdPalette className="text-lg" />,
       end: false,
     },
@@ -95,8 +95,8 @@ const Navbar = ({ onRandomize }) => {
               className={({ isActive }) =>
                 `flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all duration-150 ${
                   isActive
-                    ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-600/20'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-600/20"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
                 }`
               }
             >
@@ -133,7 +133,11 @@ const Navbar = ({ onRandomize }) => {
             className="md:hidden p-2.5 rounded-xl text-slate-400 hover:text-white bg-slate-900/80 border border-slate-800"
             aria-label="Toggle Navigation"
           >
-            {mobileMenuOpen ? <FaTimes className="text-lg" /> : <FaBars className="text-lg" />}
+            {mobileMenuOpen ? (
+              <FaTimes className="text-lg" />
+            ) : (
+              <FaBars className="text-lg" />
+            )}
           </button>
         </div>
       </div>
@@ -150,8 +154,8 @@ const Navbar = ({ onRandomize }) => {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium ${
                   isActive
-                    ? 'bg-violet-600 text-white'
-                    : 'text-slate-300 hover:bg-slate-800/80'
+                    ? "bg-violet-600 text-white"
+                    : "text-slate-300 hover:bg-slate-800/80"
                 }`
               }
             >
