@@ -1,6 +1,6 @@
-import React from 'react';
-import { FaHeart, FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
-import { HiOutlineColorSwatch } from 'react-icons/hi';
+import React from "react";
+import { FaHeart, FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { HiOutlineColorSwatch } from "react-icons/hi";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -14,7 +14,9 @@ const Footer = () => {
               <HiOutlineColorSwatch className="text-white text-lg" />
             </div>
             <div>
-              <span className="font-bold text-white text-sm">SR Gradient Studio</span>
+              <span className="font-bold text-white text-sm">
+                SR Gradient Studio
+              </span>
               <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded bg-violet-900/50 text-violet-300 border border-violet-700/50">
                 v2.0.0
               </span>
@@ -29,15 +31,17 @@ const Footer = () => {
             <FaHeart className="text-rose-500 text-xs animate-pulse" />
             <span>by</span>
             <a
-              href="https://www.srdreamlab.com"
+              href="https://www.wapborhan.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-violet-400 hover:text-violet-300 font-semibold underline decoration-violet-500/40 hover:decoration-violet-400 transition-colors"
             >
-              SR Dream Lab
+              Borhan Uddin
             </a>
             <span className="hidden sm:inline">•</span>
-            <span className="hidden sm:inline">© {currentYear} All rights reserved.</span>
+            <span className="hidden sm:inline">
+              © {currentYear} All rights reserved.
+            </span>
           </div>
 
           <div className="flex items-center gap-3">
