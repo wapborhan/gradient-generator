@@ -9,7 +9,7 @@ import {
   PalettePage,
   NotFound,
 } from "./pages";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/NavBar";
 
 export default function App() {
   const [selectedGradientForStudio, setSelectedGradientForStudio] =
